@@ -1,7 +1,9 @@
 # Ansible Playbook for Shibboleth Identity Provider (IdP) Ubuntu 16.04
 
 ## Prerequisites
-Ensure that the server has a FQDN in DNS and can be accessed from outside your LAN
+Ensure that the server has a FQDN in DNS and can be accessed from outside your LAN.
+Commands preceded by $ require normal user privileges and in most of the doc the ubuntu user.
+Commands preceded by # are root privileged. 
 
 ### Update the repos and other packages
       $ sudo apt-get update && sudo apt-get upgrade -y
@@ -18,11 +20,11 @@ Ensure that the server has a FQDN in DNS and can be accessed from outside your L
 
 ### Generate the SSH keys (Go with the defaults)
 
-      \# ssh-keygen -t rsa
+      # ssh-keygen -t rsa
 
 ### Enable password-less login for the ubuntu user
 
-      \# visudo
+      # visudo
 
 ### Add the following line to the file
 
@@ -46,14 +48,14 @@ Ensure that the server has a FQDN in DNS and can be accessed from outside your L
 
 * Clone the repository, replace <institution> with the actual name of your institution
 
-        git clone  https://github.com/mwotil/eduID_IdentityProvider.git <institution>-idp
-        cd <institution>-idp
+        $ git clone  https://github.com/mwotil/eduID_IdentityProvider.git <institution>-idp
+        $ cd <institution>-idp
 
 ### Inventory File
 
 Create the inventory file for your institution, for more information: http://docs.ansible.com/ansible/intro_inventory.html
 
-        cp inventories/template inventories/<institution>
+        $ cp inventories/template inventories/<institution>
 
 Open the inventory file with your favorite editor and change the ansible_host and ansible_user to your server environment. Don't forget to again replace <institution>.
 
@@ -61,7 +63,7 @@ Open the inventory file with your favorite editor and change the ansible_host an
 
 Create the variables file for your institution, more information: http://docs.ansible.com/ansible/playbooks_variables.html
 
-        cp group_vars/template group_vars/<institution>
+        $ cp group_vars/template group_vars/<institution>
 
 Open the variable files in your favorite editor and adapt the values to your setup.
 
@@ -72,18 +74,18 @@ Some values - passwords, credentials - are sensitive and should never be submitt
 
 Create the secrets.yml file
 
-        cp group_vars/secrets.yml.example group_vars/serets.yml
+        $ cp group_vars/secrets.yml.example group_vars/serets.yml
 
 Open the secrets.yml file and add the sensitive values.
 
 There are many ways to create random passwords/passphrases/salt, I prefer to use openssl for this task. You can replace 12 with a higher number for longer strings.
 
-        openssl rand -base64 12
+        $ openssl rand -base64 12
 
 
 ### Run the playbook
 
-        ansible-playbook -i inventories/<institution> identity_provider.yml
+        $ ansible-playbook -i inventories/<institution> identity_provider.yml
 
 
 
