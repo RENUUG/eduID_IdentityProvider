@@ -1,11 +1,52 @@
-# Ansible Playbook for Shibboleth Identity Provider (IdP)
+# Ansible Playbook for Shibboleth Identity Provider (IdP) Ubuntu 16.04
+
+## Prerequisites
+Ensure that the server has a FQDN in DNS and can be accessed from outside your LAN
+
+### Update the repos and other packages
+      $ sudo apt-get update && sudo apt-get upgrade -y
+
+### Reboot the server
+      $ sudo reboot
+
+### Add a user ubuntu (Ensure that the user ubuntu is a sudoer/administrative user)
+      $ sudo adduser ubuntu
+
+### Login again as Ubuntu to the server, and enter the root prompt with the command below:
+
+      $ sudo -i
+
+### Generate the SSH keys (Go with the defaults)
+
+      \# ssh-keygen -t rsa
+
+### Enable password-less login for the ubuntu user
+
+      \# visudo
+
+### Add the following line to the file
+
+      ubuntu ALL=(ALL) NOPASSWD:ALL
+
+### Exit the root prompt and as the ubuntu user; For keygen, use the defaults
+
+      $ ssh-keygen -t rsa
+      $ ssh-copy-id ubuntu@localhost (This will prompt you for the ubuntu user password)
 
 
-## Installation
+## Install ansible
+
+      $ sudo apt-get update
+      $ sudo apt-get install software-properties-common
+      $ sudo apt-add-repository ppa:ansible/ansible
+      $ sudo apt-get update
+      $ sudo apt-get install ansible
+
+## IdP Installation
 
 * Clone the repository, replace <institution> with the actual name of your institution
 
-        git clone  https://github.com/ubuntunet/eduID_IdentityProvider.git <institution>-idp
+        git clone  https://github.com/mwotil/eduID_IdentityProvider.git <institution>-idp
         cd <institution>-idp
 
 ### Inventory File
@@ -42,33 +83,14 @@ There are many ways to create random passwords/passphrases/salt, I prefer to use
 
 ### Run the playbook
 
-        ansible-playbook -i inventories/<institution> identity_provider.yml 
-
-If you want to try it out locally, and you have Vagrant/Virtualbox installed, the following command will run the playbook using the development inventory/variabels.
-
-        vagrant up --provision
+        ansible-playbook -i inventories/<institution> identity_provider.yml
 
 
 
-## Register on UbuntuNets Resource Registry 
+## Register on RIF Resource Registry
 
-UbuntuNet Alliance is running a resource registry at https://rr.ubuntunet.net. This registry can be used by all our member NRENs. Please get in contact with us (eduid@ubuntunet.net), so we can add you as a user.
+RIF runs a resource registry at https://rif.renu.ac.ug/rr/
 
-If you already have a federation on the Resource Registry:
-* Login at https://rr.ubuntunet.net
-* Go to Register > Identity Federation
-* SSH into the server
-* Copy the content of the IdP metadata file (/opt/shibboleth-idp/metadata/idp-metadata.xml) from your server into the Metadata form field and click "Next".
-* Choose the federation you want your IdP to be added from the "Federation" drop down field and review the preset entries in the other fields.
-* Submit the registration request by clicking on "Register"
-
-
-### RedHat 6
-
-The playbook runs on RHEL6, but when running it on PPC architecture, you'll need to download and install current versions of Java (7 or 8) and Tomcat7 yourself.
-
-Here is a useful guide:
-http://lifeofageekadmin.com/install-tomcat-7-java-1-7-centos-6-rhel-6
-
-There is an error, replace /app with /opt in the init.d and setenv.sh scripts.
-
+* SSH into your IdP server
+* Copy the content of the IdP metadata file (/opt/shibboleth-idp/metadata/idp-metadata.xml) from your server and send it to technical@renu.ac.ug
+* This metadata file will be added to the RIF metadata

@@ -1,35 +1,25 @@
 organisation:
-  name: Example Institutions
+  name: Example Institution
   url: https://example.edu
-  type: NREN
-  
+  type: INST
+
 idp:
   fqdn: idp.example.edu
   entity_id: https://idp.example.edu/shibboleth
   scope: example.edu
   displayname: Identity Provider for the Example University
   description: IdP for students and staff at the Example University
-  #Add your own logo in roles/idp/files
-  logo: logo-default.png
-  
-federations:
-  # Main Federation
-  - 
-    name: marida
-    registration_authority: https://eduid.ubuntunet.net
-    metadata_url: https://rr.ubuntunet.net/signedmetadata/federation/marida/metadata.xml
-    metadata_file: metadata.xml
-    disregard_tsl_certificate: false
-  
-  # Additional Federations
-  # Copy and paste this entry as many times as needed
-  # - 
-  #   name: unida
-  #   registration_authority: https://eduid.ubuntunet.net
-  #   metadata_url: https://rr.ubuntunet.net/signedmetadata/federation/unida/metadata.xml
-  #   metadata_file: metadata-unida.xml
-  #   disregard_tsl_certificate: false
+  #Add your own logo in roles/idp/files (Ensure the names corresponds with below)
+  logo: logo.png
 
+federations:
+    # Main Federation
+    -
+      name: RIF
+      registration_authority: https://rif.renu.ac.ug
+      metadata_url: https://rif.renu.ac.ug/rr/metadata/federation/RIF/metadata.xml
+      metadata_file: metadata.xml
+      disregard_tsl_certificate: false
 
 support_first_name: Support
 support_last_name: Mail
@@ -78,4 +68,3 @@ service_providers:
       - eduPersonEntitlement
       - sn
       - givenName
-
